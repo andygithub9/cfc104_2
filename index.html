@@ -124,23 +124,8 @@
     </a>
 
     <script>
-      function addCart(prodNum, prod) {
-        let num = $(prodNum).val()
-        localStorage.setItem($(prod).text(), num)
-      }
 
-      function factory(id) {
-        return $(`#addProd${id}`).click(function () {
-          addCart(`#prod${id}num`, `#prod${id}`)
-        })
-      }
-
-      let prodArr = [1, 2, 3, 4, 5]
-      prodArr.forEach((item) => {
-        factory(item)
-      })
-
-      $('.row.row-cols-1.row-cols-md-3.g-4').html(`
+$('.row.row-cols-1.row-cols-md-3.g-4').html(`
       <div class="col">
           <div class="card">
             <img src="./images/1.jpg" class="card-img-top" alt="..." />
@@ -176,6 +161,24 @@
           </div>
         </div>
       `)
+
+      function addCart(prodNum, prod) {
+        let num = $(prodNum).val()
+        localStorage.setItem($(prod).text(), num)
+      }
+
+      function factory(id) {
+        return $(`#addProd${id}`).click(function () {
+          addCart(`#prod${id}num`, `#prod${id}`)
+        })
+      }
+
+      let prodArr = [1, 2, 3, 4, 5]
+      prodArr.forEach((item) => {
+        factory(item)
+      })
+
+    
     </script>
   </body>
 </html>
