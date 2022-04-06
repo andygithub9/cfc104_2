@@ -22,6 +22,12 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+      integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <title>Omega</title>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
   </head>
@@ -33,7 +39,7 @@
       <div class="position-relative">
         <div class="position-absolute top-50 start-50 translate-middle">
           <a class="navbar-brand" href="#">
-            <img style="width: 200px;" src="./images/logo.png" />
+            <img style="width: 200px" src="./images/logo.png" />
           </a>
         </div>
       </div>
@@ -47,12 +53,8 @@
             <img src="./images/1.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
               <h5 id="prod1" class="card-title">魚餌1號</h5>
-              <p class="card-text">
-                人造魚餌硬餌
-              </p>
-              <p class="card-text">
-                $10
-              </p>
+              <p class="card-text">人造魚餌硬餌</p>
+              <p class="card-text">$10</p>
               <div class="input-group flex-nowrap">
                 <input
                   id="prod1num"
@@ -67,42 +69,7 @@
               <br />
               <button
                 id="addProd1"
-                style="width: 100%;"
-                type="button"
-                class="btn btn-primary"
-              >
-                加入購物車
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card">
-            <img src="./images/2.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 id="prod2" class="card-title">魚餌2號</h5>
-              <p class="card-text">
-                人造魚餌硬餌
-              </p>
-              <p class="card-text">
-                $20
-              </p>
-              <div class="input-group flex-nowrap">
-                <input
-                  id="prod2num"
-                  type="number"
-                  class="form-control"
-                  placeholder="數量"
-                  aria-label="數量"
-                  aria-describedby="addon-wrapping"
-                  min="1"
-                />
-              </div>
-              <br />
-              <button
-                id="addProd2"
-                style="width: 100%;"
+                style="width: 100%"
                 type="button"
                 class="btn btn-primary"
               >
@@ -116,7 +83,7 @@
 
     <a href="./cart.html">
       <img
-        style="position: fixed; top: 30px; right: 50px; width: 50px;"
+        style="position: fixed; top: 30px; right: 50px; width: 50px"
         src="./images/char.png"
         alt=""
         srcset=""
@@ -124,61 +91,120 @@
     </a>
 
     <script>
-
-$('.row.row-cols-1.row-cols-md-3.g-4').html(`
-      <div class="col">
-          <div class="card">
-            <img src="./images/1.jpg" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 id="prod1" class="card-title">魚餌1號</h5>
-              <p class="card-text">
-                人造魚餌硬餌
-              </p>
-              <p class="card-text">
-                $10
-              </p>
-              <div class="input-group flex-nowrap">
-                <input
-                  id="prod1num"
-                  type="number"
-                  class="form-control"
-                  placeholder="數量"
-                  aria-label="數量"
-                  aria-describedby="addon-wrapping"
-                  min="1"
-                />
-              </div>
-              <br />
-              <button
-                id="addProd1"
-                style="width: 100%;"
-                type="button"
-                class="btn btn-primary"
-              >
-                加入購物車
-              </button>
-            </div>
-          </div>
-        </div>
-      `)
-
-      function addCart(prodNum, prod) {
-        let num = $(prodNum).val()
-        localStorage.setItem($(prod).text(), num)
+      let html = "";
+      function template(name, type, id, img, price) {
+        html += `
+                  <div class="col">
+                      <div class="card">
+                        <img src="${img}" class="card-img-top" alt="..." />
+                        <div class="card-body">
+                          <h5 id="prod${id}" class="card-title">${name}</h5>
+                          <p class="card-text">
+                            ${type}
+                          </p>
+                          <p class="card-text">
+                            $${price}
+                          </p>
+                          <div class="input-group flex-nowrap">
+                            <input
+                              id="prod${id}num"
+                              type="number"
+                              class="form-control"
+                              placeholder="數量"
+                              aria-label="數量"
+                              aria-describedby="addon-wrapping"
+                              min="1"
+                            />
+                          </div>
+                          <br />
+                          <button
+                            id="addProd${id}"
+                            style="width: 100%;"
+                            type="button"
+                            class="btn btn-primary"
+                          >
+                            加入購物車
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  `;
       }
 
-      function factory(id) {
-        return $(`#addProd${id}`).click(function () {
-          addCart(`#prod${id}num`, `#prod${id}`)
-        })
-      }
+      let res;
 
-      let prodArr = [1, 2, 3, 4, 5]
-      prodArr.forEach((item) => {
-        factory(item)
-      })
+      axios
+        .get(
+          "https://j4s7279pu3.execute-api.ap-northeast-1.amazonaws.com/prod/get-product",
+          {
+            headers: {
+              "x-api-key": "9LidNagRma5OyzRSzCryh2V8mS29I7fG8uXGGuPo",
+            },
+          }
+        )
+        .then(({ data }) => {
+          data.forEach((item) => {
+            template(
+              item.name,
+              item.description,
+              item.id,
+              item.img,
+              item.price
+            );
+          });
+          $(".row.row-cols-1.row-cols-md-3.g-4").html(html);
 
-    
+          function isInCart(prodName) {
+            let flag = false;
+            let prodNames = [];
+            let parseStorage = JSON.parse(localStorage.getItem("omega"));
+            parseStorage.forEach((item) => {
+              prodNames.push(item.name);
+            });
+            return prodNames.includes(prodName);
+          }
+
+          function addCart(prodNum, prod) {
+            if (localStorage.getItem("omega") === null) {
+              localStorage.setItem("omega", "[]");
+            }
+            let num = +$(prodNum).val();
+            let name = $(prod).text();
+
+            if (num === 0) return;
+
+            if (isInCart(name)) {
+              let parseStorage = JSON.parse(localStorage.getItem("omega"));
+              parseStorage.forEach((item) => {
+                if (item.name === name) {
+                  item.num += num;
+                }
+              });
+              localStorage.setItem("omega", JSON.stringify(parseStorage));
+            }
+
+            if (!isInCart(name)) {
+              let parseStorage = JSON.parse(localStorage.getItem("omega"));
+              let obj = {};
+              obj.name = name;
+              obj.num = num;
+              parseStorage.push(obj);
+              localStorage.setItem("omega", JSON.stringify(parseStorage));
+              return;
+            }
+          }
+
+          function factory(id) {
+            return $(`#addProd${id}`).click(function () {
+              addCart(`#prod${id}num`, `#prod${id}`);
+            });
+          }
+
+          let prodArr = [1, 2, 3, 4, 5];
+          prodArr.forEach((item) => {
+            factory(item);
+          });
+        });
     </script>
   </body>
 </html>
