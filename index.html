@@ -103,7 +103,7 @@
                             ${type}
                           </p>
                           <p class="card-text">
-                            $${price}
+                            $ <span id="price${id}">${price}</span>
                           </p>
                           <div class="input-group flex-nowrap">
                             <input
@@ -154,6 +154,13 @@
           });
           $(".row.row-cols-1.row-cols-md-3.g-4").html(html);
 
+          JSON.parse(localStorage.getItem("omega")).forEach((item) => {
+            console.log(item);
+            console.log(item.id);
+            console.log(item.num);
+            $(`#prod${item.id}num`).val(item.num);
+          });
+
           function isInCart(prodName) {
             let flag = false;
             let prodNames = [];
@@ -164,12 +171,13 @@
             return prodNames.includes(prodName);
           }
 
-          function addCart(prodNum, prod) {
+          function addCart(prodNum, prod, price, id) {
             if (localStorage.getItem("omega") === null) {
               localStorage.setItem("omega", "[]");
             }
             let num = +$(prodNum).val();
             let name = $(prod).text();
+            let priceText = +$(price).text();
 
             if (num === 0) return;
 
@@ -186,8 +194,10 @@
             if (!isInCart(name)) {
               let parseStorage = JSON.parse(localStorage.getItem("omega"));
               let obj = {};
+              obj.id = id;
               obj.name = name;
               obj.num = num;
+              obj.price = priceText;
               parseStorage.push(obj);
               localStorage.setItem("omega", JSON.stringify(parseStorage));
               return;
@@ -196,11 +206,14 @@
 
           function factory(id) {
             return $(`#addProd${id}`).click(function () {
-              addCart(`#prod${id}num`, `#prod${id}`);
+              addCart(`#prod${id}num`, `#prod${id}`, `#price${id}`, id);
             });
           }
 
-          let prodArr = [1, 2, 3, 4, 5];
+          let prodArr = [];
+          data.forEach((item) => {
+            prodArr.push(item.id);
+          });
           prodArr.forEach((item) => {
             factory(item);
           });
