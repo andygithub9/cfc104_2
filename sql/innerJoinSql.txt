@@ -1,0 +1,18 @@
+SELECT `order`.`addr` AS `order_addr`, `order`.`email` AS `order_email`,
+`prod`.`name` AS `prod_name`,`prod`.`price` AS `prod_prod`
+FROM `order`
+INNER JOIN order_prod 
+ON `order`.id=`order_prod`.`order_id`
+INNER JOIN `prod`
+ON `prod`.`id`=`order_prod`.`prod_id`
+;
+
+查詢全部
+SELECT `order`.*,
+`prod`.*
+FROM `order`
+INNER JOIN order_prod 
+ON `order`.id=`order_prod`.`order_id`
+INNER JOIN `prod`
+ON `prod`.`id`=`order_prod`.`prod_id`
+;

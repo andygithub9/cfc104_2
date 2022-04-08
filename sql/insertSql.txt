@@ -1,0 +1,3 @@
+INSERT INTO `order` (`id`, `addr`, `email`, `status`) VALUES (NULL, '新竹', 'asd@gmail.com', '接獲訂單')
+
+INSERT INTO `order_prod` (`id`, `quantity`, `prod_id`, `order_id`) VALUES (NULL, '2', '5', '1')
