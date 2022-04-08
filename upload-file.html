@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>NodeJS File Upload Example</title>
+  </head>
+  <body>
+    <input id="fileupload" type="file" name="fileupload" />
+    <button id="upload-button" onclick="uploadFile()">Upload</button>
+    <script>
+      async function uploadFile() {
+        let formData = new FormData();
+        formData.append("fileupload", fileupload.files[0]);
+
+        await fetch("http://127.0.0.1/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        // await fetch(
+        //   "https://g3jufzd7w1.execute-api.ap-northeast-1.amazonaws.com/default/upload",
+        //   {
+        //     method: "POST",
+        //     body: formData,
+        //   }
+        // );
+      }
+    </script>
+  </body>
+</html>

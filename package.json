@@ -1,0 +1,23 @@
+{
+  "name": "cfc104_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "aws-upload.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andygithub9/cfc104_2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andygithub9/cfc104_2/issues"
+  },
+  "homepage": "https://github.com/andygithub9/cfc104_2#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1110.0"
+  }
+}
