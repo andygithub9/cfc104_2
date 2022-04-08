@@ -24,7 +24,7 @@
       <div class="position-relative">
         <div class="position-absolute top-50 start-50 translate-middle">
           <a class="navbar-brand" href="#">
-            <img style="width: 200px" src="./images/logo.png" />
+            <img style="width: 200px;" src="./images/logo.png" />
           </a>
         </div>
       </div>
@@ -68,7 +68,7 @@
 
     <a href="./cart.html">
       <img
-        style="position: fixed; top: 30px; right: 50px; width: 50px"
+        style="position: fixed; top: 30px; right: 50px; width: 40px;"
         src="./images/char.png"
         alt=""
         srcset=""
@@ -93,7 +93,7 @@
     ></script>
 
     <script>
-      let html = "";
+      let html = ''
       function template(name, type, id, img, price) {
         html += `
                   <div class="col">
@@ -130,96 +130,91 @@
                         </div>
                       </div>
                     </div>
-                  `;
+                  `
       }
 
-      let res;
+      let res
 
       axios
         .get(
-          "https://j4s7279pu3.execute-api.ap-northeast-1.amazonaws.com/prod/get-product",
+          'https://j4s7279pu3.execute-api.ap-northeast-1.amazonaws.com/prod/get-product',
           {
             headers: {
-              "x-api-key": "9LidNagRma5OyzRSzCryh2V8mS29I7fG8uXGGuPo",
+              'x-api-key': '9LidNagRma5OyzRSzCryh2V8mS29I7fG8uXGGuPo',
             },
-          }
+          },
         )
         .then(({ data }) => {
           data.forEach((item) => {
-            template(
-              item.name,
-              item.description,
-              item.id,
-              item.img,
-              item.price
-            );
-          });
-          $(".row.row-cols-1.row-cols-md-3.g-4").html(html);
+            template(item.name, item.description, item.id, item.img, item.price)
+          })
+          $('.row.row-cols-1.row-cols-md-3.g-4').html(html)
 
-          JSON.parse(localStorage.getItem("omega")).forEach((item) => {
-            console.log(item);
-            console.log(item.id);
-            console.log(item.num);
-            $(`#prod${item.id}num`).val(item.num);
-          });
+          if (JSON.parse(localStorage.getItem('omega')) !== null && undefined) {
+            JSON.parse(localStorage.getItem('omega')).prod.forEach((item) => {
+              $(`#prod${item.id}num`).val(item.num)
+            })
+          }
 
           function isInCart(prodName) {
-            let flag = false;
-            let prodNames = [];
-            let parseStorage = JSON.parse(localStorage.getItem("omega"));
-            parseStorage.forEach((item) => {
-              prodNames.push(item.name);
-            });
-            return prodNames.includes(prodName);
+            let flag = false
+            let prodNames = []
+            let parseStorage = JSON.parse(localStorage.getItem('omega'))
+            console.log(parseStorage['prod'])
+            parseStorage['prod'].forEach((item) => {
+              prodNames.push(item.name)
+            })
+            return prodNames.includes(prodName)
           }
 
           function addCart(prodNum, prod, price, id) {
-            if (localStorage.getItem("omega") === null) {
-              localStorage.setItem("omega", "[]");
+            if (localStorage.getItem('omega') === null) {
+              localStorage.setItem('omega', '{"prod":[]}')
             }
-            let num = +$(prodNum).val();
-            let name = $(prod).text();
-            let priceText = +$(price).text();
+            let num = +$(prodNum).val()
+            let name = $(prod).text()
+            let priceText = +$(price).text()
 
-            if (num === 0) return;
+            if (num === 0) return
 
             if (isInCart(name)) {
-              let parseStorage = JSON.parse(localStorage.getItem("omega"));
-              parseStorage.forEach((item) => {
+              let parseStorage = JSON.parse(localStorage.getItem('omega'))
+              parseStorage['prod'].forEach((item) => {
                 if (item.name === name) {
-                  item.num += num;
+                  item.num += num
                 }
-              });
-              localStorage.setItem("omega", JSON.stringify(parseStorage));
+              })
+              localStorage.setItem('omega', JSON.stringify(parseStorage))
             }
 
             if (!isInCart(name)) {
-              let parseStorage = JSON.parse(localStorage.getItem("omega"));
-              let obj = {};
-              obj.id = id;
-              obj.name = name;
-              obj.num = num;
-              obj.price = priceText;
-              parseStorage.push(obj);
-              localStorage.setItem("omega", JSON.stringify(parseStorage));
-              return;
+              let parseStorage = JSON.parse(localStorage.getItem('omega'))
+              console.log(parseStorage)
+              let obj = {}
+              obj.id = id
+              obj.name = name
+              obj.num = num
+              obj.price = priceText
+              parseStorage['prod'].push(obj)
+              localStorage.setItem('omega', JSON.stringify(parseStorage))
+              return
             }
           }
 
           function factory(id) {
             return $(`#addProd${id}`).click(function () {
-              addCart(`#prod${id}num`, `#prod${id}`, `#price${id}`, id);
-            });
+              addCart(`#prod${id}num`, `#prod${id}`, `#price${id}`, id)
+            })
           }
 
-          let prodArr = [];
+          let prodArr = []
           data.forEach((item) => {
-            prodArr.push(item.id);
-          });
+            prodArr.push(item.id)
+          })
           prodArr.forEach((item) => {
-            factory(item);
-          });
-        });
+            factory(item)
+          })
+        })
     </script>
   </body>
 </html>

@@ -9,10 +9,12 @@ ON `prod`.`id`=`order_prod`.`prod_id`
 
 查詢全部
 SELECT `order`.*,
-`prod`.*
+`prod`.*,
+`order_prod`.`quantity`
 FROM `order`
 INNER JOIN order_prod 
 ON `order`.id=`order_prod`.`order_id`
 INNER JOIN `prod`
 ON `prod`.`id`=`order_prod`.`prod_id`
+ORDER BY `order`.id
 ;
