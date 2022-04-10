@@ -1,3 +1,6 @@
+# 插入訂單
 INSERT INTO `order` (`id`, `addr`, `email`, `status`) VALUES (NULL, '新竹', 'asd@gmail.com', '接獲訂單')
-
 INSERT INTO `order_prod` (`id`, `quantity`, `prod_id`, `order_id`) VALUES (NULL, '2', '5', '1')
+
+# 插入商品
+INSERT INTO `prod` (`id`, `name`, `price`, `description`, `img`, `status`) VALUES (NULL, '龍牙vib', '26', '顫泳彩色款7g/10g/12g', './images/6.jpg', '有庫存')

@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>NodeJS File Upload Example</title>
+  </head>
+  <body>
+    <input type="file" id="files" />
+    <div id="output"></div>
+
+    <script>
+      ;(function (document) {
+        var input = document.getElementById('files'),
+          output = document.getElementById('output')
+
+        // Eventhandler for file input.
+        function openfile(evt) {
+          var files = input.files
+          // Pass the file to the blob, not the input[0].
+          fileData = new Blob([files[0]])
+          // Pass getBuffer to promise.
+          var promise = new Promise(getBuffer(fileData))
+          // Wait for promise to be resolved, or log error.
+          promise
+            .then(function (data) {
+              // Here you can pass the bytes to another function.
+              console.log(data)
+              fetch(
+                'https://3yqx2jylpb.execute-api.ap-northeast-1.amazonaws.com/dev/omega-studio.click/images/test878.jpg',
+                {
+                  method: 'PUT',
+                  body: data,
+                  headers: {
+                    'content-type': 'image/jpeg',
+                  },
+                },
+              )
+            })
+            .catch(function (err) {
+              console.log('Error: ', err)
+            })
+        }
+
+        /*
+        Create a function which will be passed to the promise
+        and resolve it when FileReader has finished loading the file.
+      */
+        function getBuffer(fileData) {
+          return function (resolve) {
+            var reader = new FileReader()
+            reader.readAsArrayBuffer(fileData)
+            reader.onload = function () {
+              var arrayBuffer = reader.result
+              var bytes = new Uint8Array(arrayBuffer)
+              resolve(bytes)
+            }
+          }
+        }
+
+        // Eventlistener for file input.
+        input.addEventListener('change', openfile, false)
+      })(document)
+    </script>
+  </body>
+</html>
