@@ -43,16 +43,16 @@
   </head>
   <body>
     <div class="container">
-      <div style="display: flex" class="position-relative">
-        <a style="margin: auto" class="navbar-brand" href="./index.html">
+      <div style="display: flex;" class="position-relative">
+        <a style="margin: auto;" class="navbar-brand" href="./index.html">
           <img id="logo" src="./images/logo.png" />
         </a>
       </div>
       <div class="container">
         <div
-          style="display: flex; align-items: center; justify-content: center"
+          style="display: flex; align-items: center; justify-content: center;"
         >
-          <div style="max-width: 500px; width: 400px" class="list-group">
+          <div style="max-width: 500px; width: 400px;" class="list-group">
             <div class="list-group">
               <div id="prodList">
                 <!-- <a href="#" class="list-group-item list-group-item-action">
@@ -74,16 +74,16 @@
                 </a> -->
               </div>
 
-              <h5 id="totalPrice" style="text-align: right">總金額: 0</h5>
+              <h5 id="totalPrice" style="text-align: right;">總金額: 0</h5>
             </div>
           </div>
         </div>
 
         <br />
         <div
-          style="display: flex; align-items: center; justify-content: center"
+          style="display: flex; align-items: center; justify-content: center;"
         >
-          <div style="max-width: 500px; width: 400px">
+          <div style="max-width: 500px; width: 400px;">
             <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">
                 寄送地址
@@ -96,8 +96,14 @@
               </label>
               <input type="email" class="form-control" id="email" />
             </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">
+                密碼(若無密碼請向管理員索取)
+              </label>
+              <input type="password" class="form-control" id="password" />
+            </div>
             <button
-              style="margin-top: 10px"
+              style="margin-top: 10px;"
               class="btn btn-primary"
               id="submit"
             >
@@ -127,7 +133,7 @@
 
     <script>
       $(function () {
-        let html = "";
+        let html = ''
         function template(name, price, num, id) {
           html += `<a href="#" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
@@ -144,69 +150,71 @@
                   data-id="${id}"
                 />
               </a>
-              </br>`;
+              </br>`
         }
 
-        let parseStorage = JSON.parse(localStorage.getItem("omega"));
-        if (JSON.parse(localStorage.getItem("omega")) !== (null && undefined)) {
-          parseStorage["prod"].forEach((ele) => {
-            template(ele.name, ele.price, ele.num, ele.id);
-          });
+        let parseStorage = JSON.parse(localStorage.getItem('omega'))
+        if (JSON.parse(localStorage.getItem('omega')) !== (null && undefined)) {
+          parseStorage['prod'].forEach((ele) => {
+            template(ele.name, ele.price, ele.num, ele.id)
+          })
         }
 
-        $("#prodList").html(html);
+        $('#prodList').html(html)
 
         function count() {
-          let count = 0;
+          let count = 0
           if (
-            JSON.parse(localStorage.getItem("omega")) !== (null && undefined)
+            JSON.parse(localStorage.getItem('omega')) !== (null && undefined)
           ) {
-            JSON.parse(localStorage.getItem("omega"))["prod"].forEach((ele) => {
-              count += ele.num * ele.price;
-            });
-            $("#totalPrice").text(`總金額: ${count}`);
+            JSON.parse(localStorage.getItem('omega'))['prod'].forEach((ele) => {
+              count += ele.num * ele.price
+            })
+            $('#totalPrice').text(`總金額: ${count}`)
           }
         }
-        count();
+        count()
 
-        if (JSON.parse(localStorage.getItem("omega")) !== (null && undefined)) {
-          parseStorage["prod"].forEach((ele) => {
-            $(`#num${ele.id}`).on("input", function () {
-              let parseStorage = JSON.parse(localStorage.getItem("omega"));
-              parseStorage["prod"].forEach((item) => {
-                if (item.id === $(this).data("id")) {
-                  item.num = $(this).val();
+        if (JSON.parse(localStorage.getItem('omega')) !== (null && undefined)) {
+          parseStorage['prod'].forEach((ele) => {
+            $(`#num${ele.id}`).on('input', function () {
+              let parseStorage = JSON.parse(localStorage.getItem('omega'))
+              parseStorage['prod'].forEach((item) => {
+                if (item.id === $(this).data('id')) {
+                  item.num = $(this).val()
                 }
-              });
-              localStorage.setItem("omega", JSON.stringify(parseStorage));
-              count();
-            });
-          });
+              })
+              localStorage.setItem('omega', JSON.stringify(parseStorage))
+              count()
+            })
+          })
         }
 
-        $("#submit").on("click", function () {
-          let parseStorage = JSON.parse(localStorage.getItem("omega"));
-          parseStorage.addr = $("#addr").val();
-          parseStorage.email = $("#email").val();
-          localStorage.setItem("omega", JSON.stringify(parseStorage));
-
-          console.log(localStorage.getItem("omega"));
+        $('#submit').on('click', function () {
+          let parseStorage = JSON.parse(localStorage.getItem('omega'))
+          parseStorage.addr = $('#addr').val()
+          parseStorage.email = $('#email').val()
+          parseStorage.password = $('#password').val()
+          localStorage.setItem('omega', JSON.stringify(parseStorage))
 
           axios
             .post(
-              "https://j4s7279pu3.execute-api.ap-northeast-1.amazonaws.com/prod/post-order",
-              localStorage.getItem("omega")
+              'https://j4s7279pu3.execute-api.ap-northeast-1.amazonaws.com/prod/post-order',
+              localStorage.getItem('omega'),
             )
             .then(function (response) {
-              alert("訂購成功");
-              location.href = "./index.html";
-              console.log(response);
+              alert('訂購成功')
+              localStorage.removeItem('omega')
+              location.href = './index.html'
+              // console.log(response)
             })
             .catch(function (error) {
-              console.log(error);
-            });
-        });
-      });
+              alert('密碼錯誤')
+              location.href = './index.html'
+              // console.log(error)
+            })
+        })
+      })
     </script>
   </body>
 </html>
