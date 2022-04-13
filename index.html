@@ -13,24 +13,38 @@
       crossorigin="anonymous"
     />
 
+    <style>
+      #logo {
+        width: 200px;
+      }
+      #cart {
+        position: fixed;
+        top: 30px;
+        right: 50px;
+        width: 40px;
+      }
+      @media (max-width: 500px) {
+        #logo {
+          width: 150px;
+        }
+        #cart {
+          width: 30px;
+          right: 20px;
+          top: 20px;
+        }
+      }
+    </style>
+
     <title>Omega</title>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <br />
-    <br />
-    <br />
     <div class="container">
-      <div class="position-relative">
-        <div class="position-absolute top-50 start-50 translate-middle">
-          <a class="navbar-brand" href="#">
-            <img style="width: 200px" src="./images/logo.png" />
-          </a>
-        </div>
+      <div style="display: flex" class="position-relative">
+        <a style="margin: auto" class="navbar-brand" href="./index.html">
+          <img id="logo" src="./images/logo.png" />
+        </a>
       </div>
-      <br />
-      <br />
-      <br />
 
       <div class="row row-cols-1 row-cols-md-3 g-4">
         <div
@@ -79,12 +93,7 @@
     </div>
 
     <a href="./cart.html">
-      <img
-        style="position: fixed; top: 30px; right: 50px; width: 40px"
-        src="./images/char.png"
-        alt=""
-        srcset=""
-      />
+      <img src="./images/char.png" id="cart" alt="" />
     </a>
 
     <script

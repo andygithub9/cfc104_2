@@ -17,24 +17,37 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <style>
+      #logo {
+        width: 200px;
+      }
+      #cart {
+        position: fixed;
+        top: 30px;
+        right: 50px;
+        width: 40px;
+      }
+      @media (max-width: 500px) {
+        #logo {
+          width: 150px;
+        }
+        #cart {
+          width: 30px;
+          right: 20px;
+          top: 20px;
+        }
+      }
+    </style>
     <title>Omega</title>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <br />
-    <br />
-    <br />
     <div class="container">
-      <div class="position-relative">
-        <div class="position-absolute top-50 start-50 translate-middle">
-          <a class="navbar-brand" href="./index.html">
-            <img style="width: 200px" src="./images/logo.png" />
-          </a>
-        </div>
+      <div style="display: flex" class="position-relative">
+        <a style="margin: auto" class="navbar-brand" href="./index.html">
+          <img id="logo" src="./images/logo.png" />
+        </a>
       </div>
-      <br />
-      <br />
-      <br />
       <div class="container">
         <div
           style="display: flex; align-items: center; justify-content: center"
@@ -61,7 +74,7 @@
                 </a> -->
               </div>
 
-              <h5 id="totalPrice" style="text-align: right">總金額: 2345</h5>
+              <h5 id="totalPrice" style="text-align: right">總金額: 0</h5>
             </div>
           </div>
         </div>
@@ -96,12 +109,7 @@
     </div>
 
     <a href="./cart.html">
-      <img
-        style="position: fixed; top: 30px; right: 50px; width: 40px"
-        src="./images/char.png"
-        alt=""
-        srcset=""
-      />
+      <img src="./images/char.png" id="cart" alt="" />
     </a>
 
     <script
@@ -140,34 +148,41 @@
         }
 
         let parseStorage = JSON.parse(localStorage.getItem("omega"));
-
-        parseStorage["prod"].forEach((ele) => {
-          template(ele.name, ele.price, ele.num, ele.id);
-        });
+        if (JSON.parse(localStorage.getItem("omega")) !== (null && undefined)) {
+          parseStorage["prod"].forEach((ele) => {
+            template(ele.name, ele.price, ele.num, ele.id);
+          });
+        }
 
         $("#prodList").html(html);
 
         function count() {
           let count = 0;
-          JSON.parse(localStorage.getItem("omega"))["prod"].forEach((ele) => {
-            count += ele.num * ele.price;
-          });
-          $("#totalPrice").text(`總金額: ${count}`);
+          if (
+            JSON.parse(localStorage.getItem("omega")) !== (null && undefined)
+          ) {
+            JSON.parse(localStorage.getItem("omega"))["prod"].forEach((ele) => {
+              count += ele.num * ele.price;
+            });
+            $("#totalPrice").text(`總金額: ${count}`);
+          }
         }
         count();
 
-        parseStorage["prod"].forEach((ele) => {
-          $(`#num${ele.id}`).on("input", function () {
-            let parseStorage = JSON.parse(localStorage.getItem("omega"));
-            parseStorage["prod"].forEach((item) => {
-              if (item.id === $(this).data("id")) {
-                item.num = $(this).val();
-              }
+        if (JSON.parse(localStorage.getItem("omega")) !== (null && undefined)) {
+          parseStorage["prod"].forEach((ele) => {
+            $(`#num${ele.id}`).on("input", function () {
+              let parseStorage = JSON.parse(localStorage.getItem("omega"));
+              parseStorage["prod"].forEach((item) => {
+                if (item.id === $(this).data("id")) {
+                  item.num = $(this).val();
+                }
+              });
+              localStorage.setItem("omega", JSON.stringify(parseStorage));
+              count();
             });
-            localStorage.setItem("omega", JSON.stringify(parseStorage));
-            count();
           });
-        });
+        }
 
         $("#submit").on("click", function () {
           let parseStorage = JSON.parse(localStorage.getItem("omega"));
